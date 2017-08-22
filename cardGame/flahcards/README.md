@@ -92,7 +92,7 @@ class Stacklist extends Component {
                 {
                     stacks.map(stack => {
                         return (
-                            <h4>{stack.title}</h4>
+                            <h4 key={stack.id}>{stack.title}</h4>
                         )
                     })
                 }
@@ -103,7 +103,7 @@ class Stacklist extends Component {
 
 export default StackList;
 ``` 
-What we are doing is we are importing that JSON file and using the map function to, in effect, cycle through it. This will create a loop that captures the title as you can see from the h4 tag.
+What we are doing is we are importing that JSON file and using the map function to, in effect, cycle through it. This will create a loop that captures the title as you can see from the h4 tag. You also must use a key value to identify the uniqure objects from the list.
 
 Step 6: We now need to make changes to App.js in order to import the StackList:
 ```
