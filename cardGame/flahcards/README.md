@@ -13,7 +13,7 @@ remove the entire SRC file
 
 ## Step By Step Instructions
 
-Step 1: Remove the current SRC file and replace it with an empty one. Create a components and data folders within it. Create an index.js file within the SRC file. Within the components file create an App.js and Stacklist.js files. within the data file create a stacks.json file.
+Step 1: Remove the current SRC file and replace it with an empty one. Create a components and data folders within it. Create an index.js file within the SRC file. Within the components file create an App.js and StackList.js files. within the data file create a stacks.json file.
 
 Step 2: Within the App.js file place the following component information:
 ```
@@ -83,7 +83,7 @@ make sure this goes into our stacks.json file
 Step 5: We now need to discuss the StackList file and how this information will be produced within a component. First put the following code in the Stacklist.js file:
 ```
 import React, {Component} from 'react';
-import stacks from './data/stacks.json';
+import stacks from '../data/stacks.json';
 
 class Stacklist extends Component {
     render() {
@@ -101,8 +101,25 @@ class Stacklist extends Component {
     }
 }
 
-export default Stacklist;
+export default StackList;
 ``` 
 What we are doing is we are importing that JSON file and using the map function to, in effect, cycle through it. This will create a loop that captures the title as you can see from the h4 tag.
 
+Step 6: We now need to make changes to App.js in order to import the StackList:
+```
+import React, {Component} from 'react';
+import StackList from './StackList';
 
+class App extends Component {
+    render() {
+        return (
+            <div>
+                <h2>Flashcards</h2>
+                <hr/>
+                <StackList />
+            </div>
+        )
+    }
+}
+```
+So now we have imported the stacklist and displated it within the return div. You should see the titles now displayed on the DOM.
