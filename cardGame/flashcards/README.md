@@ -251,5 +251,27 @@ export function setStack(stack) {
     };
 }
 ```
+Step 12: In order to create our store we now need to bring in the store funtion to our top level index.js file:
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import App from './components/App';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import rootReducer from './reducers';
+import Stack from './components/Stack';
+import { setStack } from './actions';
+
+const store = createStore(rootReducer);
+store.subscribe(() => console.log('store', store.getState()));
+store.dispatch(setStack({ id: 0, title: 'example', cards: [] }));
+```
+then test this in the console and make sure the output from the all our files is collecting in the store and returning an object with our dummy info inside it:
+```
+store Object
+    cards:  []
+    id:     0
+    title:  "example"
+```
 
 
