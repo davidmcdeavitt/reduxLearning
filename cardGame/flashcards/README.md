@@ -258,6 +258,7 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import App from './components/App';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Provider } from 'react-redux';
 import rootReducer from './reducers';
 import Stack from './components/Stack';
 import { setStack } from './actions';
@@ -265,13 +266,62 @@ import { setStack } from './actions';
 const store = createStore(rootReducer);
 store.subscribe(() => console.log('store', store.getState()));
 store.dispatch(setStack({ id: 0, title: 'example', cards: [] }));
+
+ReactDOM.render(
+    <Provider store={store}>
+        <BrowserRouter>
+            <Switch>
+                <Route exact path='/' component={App} />
+                <Route exact path='/stack' component={Stack} />
+            </Switch>
+        </BrowserRouter>
+    </Provider>,
+document.getElementById('root'));
 ```
-then test this in the console and make sure the output from the all our files is collecting in the store and returning an object with our dummy info inside it:
+The Provider wraps our store and gives it the store binding. We import our rootReducer from the reducers and setStack from actions. We also import createStore from redux. Finally we can see how we are building our store. 
+Then test this in the console and make sure the output from the all our files is collecting in the store and returning an object with our dummy info inside it:
 ```
 store Object
     cards:  []
     id:     0
     title:  "example"
+```
+Step 13: We now need to set the stack and binding action in our store. First we need to make some changes to our StackList file:
+```
+import {setStack} from '../actions';
+import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
+```
+we then need to connect our component at the bottom of the file and map the props that are coming in and give it the property of dispatch. Dispatch is a built in fuction within redux that allows you to change the state within the strore. the bindactioncreators will then bind similar key objects together but bound with a dispatch so they they might be invoked directly:so we are binding lists of similar object from our Stacklist using the setstack action creator. So as such:
+```
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ setStack }, dispatch);
+}
+const connectComponent = connect(null, mapDispatchToProps);
+
+export default connectComponent(StackList);
+```
+This descibes what components of the store we want to listen to. Right now we use null because we are getting our information from a JSON file we connect using null. We need a way of expressing this in our render function. Therefor we have to describe the cureent state of a prop with a similar id as such:
+```
+console.log('stacklist props', this.props);
+
+        return (
+            <div>
+                {
+                    stacks.map(stack => {
+                        return (
+                            <Link 
+                            to='/stack' 
+                            key={stack.id}
+                            onClick={() => this.props.setStack(stack)} 
+                            >
+                            <h4>{stack.title}</h4>
+                            </Link>
+                        )
+                    })
+                }
+            </div>
+        )
 ```
 
 
