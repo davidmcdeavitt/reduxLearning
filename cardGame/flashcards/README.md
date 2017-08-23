@@ -323,5 +323,64 @@ console.log('stacklist props', this.props);
             </div>
         )
 ```
+We now have the ability to dispatch a setstack action right from the component through its props and they set the stack we are mapping over through our link component. Now we clean up our code by cleaning up the bottom:
+```
+export default connect(null, { setStack })(StackList);
+```
+Because we don't have to bind the action creators in redux we can get rid of the line inporting the bingActionCreators. This cleans up the code and makes it flow better.
 
+Step 14: We now need to connect the stack component to the StackList component so that it can render all the information we need. Enter the following in the Stack.js file:
+```
+import { connect } from 'react-redux';
+
+class Stack extends Component {
+    render() {
+        console.log('stack props', this.props);
+        return(
+            <div>
+                <Link to='/'>Home</Link>
+                <h3>{this.props.stack.title}</h3>
+                <br />
+                {
+                    this.props.stack.cards.map(card => {
+                        return (
+                            <div key={card.id}>
+         {card.prompt}                   </div>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+}
+
+function mapStateToProps(state) {
+    return { stack: state }
+}
+
+export default connect(mapStateToProps, null)(Stack);
+```
+As you see we are importing the connect function here as well. If we work from the bottom up, you see it is similar to how we did the stack list. Though this time we are using the mapStateToProps function to return the state of the stack component. This state is active and can change with a users input. We are also exporting this to the index.js file (this is what we call a hook). Again we are using the map function to see all the entries when we call on it. We are also making our title dynamic depending upon what group of cards we are choosing. We are using the console log in this situation to check and make sure that we are in deed capturing the correct information. 
+
+Step 15: We now need to distructure the syntax a bit to es6 To do this we will make some changes by replacing the console.log with the following:
+```
+const {title, cards } = this.props.stack;
+```
+This will make bringing in the title and the card more efficient for us. It makes rendering the this.props.stack unnecessary. This allows is to refer to title and cards in a more concise manner:
+```
+<div>
+<Link to='/'>Home</Link>
+<h3>{title}</h3>
+<br />
+{
+cards.map(card => {
+return (
+<div key={card.id}>
+{card.prompt}                   
+</div>
+```
+There should be no change in the effectiveness of the app as we only changed syntax.
+
+Step 16: Now we need to create card conponents
+         
 
