@@ -224,5 +224,32 @@ export function setStack(stack) {
     };
 }
 ```
-The action is the one that sets the stack. It is an object that sets the type to set against the object. It is normal to use a string in redux in string case which is all uppercase. Then the action will create relevent data, therefore we make a stack key. The next question is what data we will input into the function. So this stack data will come from any component to tell the action how to set the data. By wrapping it in a function we allow it to become a parameter called stack and the value of the stack key will be the stack variable we set as the stack function, which any component can use to set the data. Since we use the action variable once we just return the object whose type is setstack and whose data is stack. We export it as a shared function by putting export at the beginning of the function.
+The action is the one that sets the stack. It is an object that sets the type to set against the object. It is normal to use a string in redux in string case which is all uppercase. Then the action will create relevent data, therefore we make a stack key. The next question is what data we will input into the function. So this stack data will come from any component to tell the action how to set the data. By wrapping it in a function we allow it to become a parameter called stack and the value of the stack key will be the stack variable we set as the stack function, which any component can use to set the data. Since we use the action variable once we just return the object whose type is setstack and whose data is stack. We export it as a shared function by putting export at the beginning of the function. A reducer creates an object that the state will use to represent data in the reducer.
+
+Step 11: We will create a reducer that has the function stack that represents the reducer. We need to return an object that is variable in any instance. write the following into a new index.js file in a new reducers file:
+```
+import { SET_STACK } from '../actions';
+
+function stack(state = {}, action) {
+    switch (action.type) {
+        case SET_STACK:
+            return action.stack;
+        default:
+            return state;
+    }
+}
+export default stack;
+```
+First we create a fuction that lives within the reducer and has two parameters. One is the state itself which we set as an object to handle any changes from the input. The second is action which calls the action that represents the different types of actions we can run when we creat, edit, delete. In order to switch between these we create a switch function which takes the action and sets it against different types of defined actions which affect our incoming data. In our default we will return what is currently held in the state object. We now want to set it to our setstate from the action object. When the object comes in from the action container we see that the data comes in as stack. So when the action type is stack we want to have the action of retuning that stack data rence return actio.stack; We then change the SETStack to a variable amout decided by the action container. to do this we change the string to a variable and make the following changes to the index.js file in the actions folder:
+```
+export const SET_STACK = 'SET_STACK';
+
+export function setStack(stack) {
+    return {
+        type:   SET_STACK,
+        stack:  stack  
+    };
+}
+```
+
 
