@@ -466,3 +466,81 @@ body {
 }
 ```
 This gives us a fade out syle for the answers area. The coolest part is the fade out action which is caused by the onclick change in state.
+
+Step 18: We need to add a redux flow to control flow list of stacks. First we need an action to load the stacks. Second, we need a reducer to actually handle setting stacks in a redux store. Thir, we need to check to make sure the stacks are in the redux store. In actions<index.js add a new const and create a new action function:
+```
+export const LOAD_STACKS = 'LOAD_STACKS';
+export function loadStacks(stacks) {
+    return {
+        type: LOAD_STACKS,
+        stacks 
+    };
+}
+```
+We now to add a new function in the reducers folder:
+```
+import { combineReducers } from 'redux'; 
+import { SET_STACK, LOAD_STACKS } from '../actions';
+function stacks (state = [], action) {
+    switch(action.type) {
+        case LOAD_STACKS:
+            return action.stacks;
+        default:
+            return state;
+    }
+}
+export default combineReducers({ stack, stacks });
+```
+So we can see that the function is very similar to our other stack function, but the only difference being that stacks with be loaded instead of a stack. We also have to add a combineReducers function so that we cna export both reducers. You will notice our map function will break. Time we make some changes for that.
+
+Step19: The easiest fix
+At the bottom of the Stack.js file we can make this little change:
+```
+function mapStateToProps(state) {
+    return { stack: state.stack }
+}
+```
+Why does this work? because without stack being set we cant have stacks. There for set to stack first and its not broke.
+
+Step 20: Lets loadStacks do the work when it comes to reloading the stackList. To do this we need to enter some changes to the StackList:
+```
+import { setStack, loadStacks } from '../actions';
+import { connect } from 'react-redux';
+
+class StackList extends Component {
+    componentDidMount() {
+        if (this.props.stacks.length === 0)
+        this.props.loadStacks(stacks);
+    }
+    render() {
+        
+
+        return (
+            <div>
+                {
+                    this.props.stacks.map(stack => {
+                        return (
+                            <Link 
+                            to='/stack' 
+                            key={stack.id}
+                            onClick={() => this.props.setStack(stack)} 
+                            >
+                            <h4>{stack.title}</h4>
+                            </Link>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+}
+
+function mapStateToProps(state) {
+    return { stacks: state.stacks };
+}
+
+export default connect(mapStateToProps, { setStack, loadStacks })(StackList);
+```
+Starting from the bottom we need to set the hook on state. We now want to return stacks so I can constantly update it. we will use the function setStack to set each stack equal to the state. The problem we have is that the state needs to return to zero each time we run componentDidMount. to do this we use an old school if statement to set the length of the stacks to 0. This will allow us to create new lists whenever we want to add to the flashcards app.
+
+Step 21:
