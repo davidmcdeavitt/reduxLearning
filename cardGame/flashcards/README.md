@@ -381,6 +381,31 @@ return (
 ```
 There should be no change in the effectiveness of the app as we only changed syntax.
 
-Step 16: Now we need to create card conponents
+Step 16: Now we need to create card conponents we do this by creating a Card.js file in the components section and inputting the following:
+```
+import React, {Component} from 'react';
+
+class Card extends Component {
+    render() {
+        const { prompt, answer } = this.props.card;
+        return (
+            
+            <div>
+                <div><h4>{prompt}</h4></div>
+                <div><h4>{answer}</h4></div>
+            </div>
+        )
+    }
+}
+export default Card;
+```
+In this instance we are referring to prompt and answer from the JSON file. This allows us to cycle through each of the items in the JSON file as long as they are in either one of the lists. We the replace the div in the Stack.js file with the following:
+```
+<Card 
+key={card.id}
+card={card}/>
+```
+And import the card at the top of the Stack.js file. We have already been building this as a cards item so it fits in perfectly. Now we need to style this all up using bootstrap. Import the bootstrap link into the top of the public index.html and we can move forward from here.
+
          
 
