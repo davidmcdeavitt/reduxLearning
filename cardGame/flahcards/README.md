@@ -123,3 +123,94 @@ class App extends Component {
 }
 ```
 So now we have imported the stacklist and displated it within the return div. You should see the titles now displayed on the DOM.
+
+Step 7: We now need to add routing to the app. This way we can add a way to filter to different components within the app. 
+Routing is the most tricy part of a React app as any small miscues can cause the whole app to fail. In order to set up our router in the index.js file we need to make some structural changes:
+```
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './components/App';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+ReactDOM.render(
+    <BrowserRouter>
+        <Switch>
+            <Route exact path='/' component={App} />
+        </Switch>
+    </BrowserRouter>,
+document.getElementById('root'));
+```
+I gave the entire code from the file so that you can make sure this is correct. The DOM should not have changed in what is shown. First, we imported BrowserRouter, Switch, and Route from React-DOM. This allows us to use these built in function to help us route our app. We willl render a bowser component instead of the actual app. The first child is the Swich Component that we use to handle different routes. Then finally the Route component, which will not have any children. The Route maps the path using the path function which is the same as saying URL. The using component to determine which component we will be displayed. Next, we add exact in order to say we will only show the component on this component and can not use this again.
+
+Step 8: Adding different components using Route is pretty straight forward in that you just need to create the component, then name it on the router. Please create a component in a new Stack.js file within the components folder:
+```
+import React, {Component} from 'react';
+
+class Stack extends Component {
+    render() {
+        return(
+            <div>
+                <h3>Title</h3>
+            </div>
+        )
+    }
+}
+
+export default Stack;
+```
+Then import it into the index.js file and name a route for it like so:
+```
+import Stack from './components/Stack';
+
+ReactDOM.render(
+    <BrowserRouter>
+        <Switch>
+            <Route exact path='/' component={App} />
+            <Route exact path='/stack' component={Stack} />
+        </Switch>
+    </BrowserRouter>,
+document.getElementById('root'));
+```
+
+As you can see we now have a route that points to the Stack component. but the problem is we need to type it into the URL to reach the new route. Luckily there is a function built into React that allows is to effectively quarterback the routes. Luckily we have the Link function built in.
+
+Step 9: We now need to add the link home button into the stack.js file:
+```
+import { Link } from 'react-router-dom';
+
+class Stack extends Component {
+    render() {
+        return(
+            <div>
+                <Link to='/'>Home</Link>
+                <h3>Title</h3>
+            </div>
+        )
+    }
+}
+```
+As you can see creating links is relatively easy but now we need to add links for our flashcard collections:
+```
+import { Link } from 'react-router-dom';
+
+class StackList extends Component {
+    render() {
+        return (
+            <div>
+                {
+                    stacks.map(stack => {
+                        return (
+                            <Link to='/stack'>
+                            <h4 key={stack.id}>{stack.title}</h4>
+                            </Link>
+                        )
+                    })
+                }
+            </div>
+        )
+    }
+}
+```
+As you can see, again, the link component is very easy and understandable to use. It allows us to navigate between many sources of information in our app.
+
+Next we add Redux so we can set context for the stack and add way more functionality to use. First, we need to create a store, but the first thing we need to do before creating a store is to create reducers. Reducers are mechanisms which describe how to actually update the store. We then use actions to pass data into the store. 
