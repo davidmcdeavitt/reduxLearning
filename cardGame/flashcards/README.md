@@ -408,4 +408,61 @@ card={card}/>
 And import the card at the top of the Stack.js file. We have already been building this as a cards item so it fits in perfectly. Now we need to style this all up using bootstrap. Import the bootstrap link into the top of the public index.html and we can move forward from here.
 
          
+Step 17: First on the Stack.js file we need to add this tag to the Link tag:
+```
+<Link className='link-home' to='/'>
+```
+and add the following tag to the Card.js div return area:
+```
+<div className='card' onClick={() => this.setState({ reveal: true })}>
+<div className='card-prompt'><h4>{prompt}</h4></div>
+<div className='card-answer'>
+<h4 className={this.state.reveal ? 'text-revealed' : 'text-hidden'}>{answer}</h4>
+</div>
+</div>
+```
+Now we need to add some styling to the index.css file:
+```
+body {
+    padding: 5%;
+    text-align: center;
+}
+.link-home {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+}
+.card {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
 
+.card-prompt {
+    display: inline-block;
+    text-align: left;
+    width: 50%;
+}
+.card-answer {
+    display: inline-block;
+    text-align: right;
+    width: 50%;
+}
+.text-hidden {
+    visibility: hidden;
+}
+.text-revealed {
+    animation-name: fade-in;
+    animation-duration: 1s;
+    visibility: visible;
+}
+
+@keyframes fade-in {
+    from { opacity: 0 }
+    to {opacity: 100 }
+}
+```
+This gives us a fade out syle for the answers area. The coolest part is the fade out action which is caused by the onclick change in state.
