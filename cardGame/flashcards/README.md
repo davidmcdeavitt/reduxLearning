@@ -214,3 +214,15 @@ class StackList extends Component {
 As you can see, again, the link component is very easy and understandable to use. It allows us to navigate between many sources of information in our app.
 
 Next we add Redux so we can set context for the stack and add way more functionality to use. First, we need to create a store, but the first thing we need to do before creating a store is to create reducers. Reducers are mechanisms which describe how to actually update the store. We then use actions to pass data into the store. 
+
+Step 10: We need to firs create an action.js file within the src file. Then create an index.js within the action file. Within the index.js file we need to enter the text that allows us to create the action:
+```
+export function setStack(stack) {
+    return {
+        type:   'SET_STACK',
+        stack:  stack  
+    };
+}
+```
+The action is the one that sets the stack. It is an object that sets the type to set against the object. It is normal to use a string in redux in string case which is all uppercase. Then the action will create relevent data, therefore we make a stack key. The next question is what data we will input into the function. So this stack data will come from any component to tell the action how to set the data. By wrapping it in a function we allow it to become a parameter called stack and the value of the stack key will be the stack variable we set as the stack function, which any component can use to set the data. Since we use the action variable once we just return the object whose type is setstack and whose data is stack. We export it as a shared function by putting export at the beginning of the function.
+
